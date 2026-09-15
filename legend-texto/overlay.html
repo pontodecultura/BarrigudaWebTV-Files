@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Overlay Barriguda TV</title>
+    <style>
+        :root {
+            --azul: #0093d3;
+            --amarelo: #f9ba13;
+            --laranja: #d87721;
+            --verde: #86ac41;
+            --vermelho: #e63946;
+            --legenda-texto-cor: #1a1a1a;
+            --fundo-dark: rgba(134, 172, 65, 0.9);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Comic Sans MS', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            overflow: hidden;
+            background: transparent;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* Container Principal - Layout Wide */
+        .container {
+            position: absolute;
+            bottom: 50px;
+            width: 94%;
+            left: 3%;
+            display: flex;
+            align-items: stretch;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateY(0);
+            opacity: 1;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+        }
+
+        .hidden {
+            opacity: 0;
+            transform: translateY(120px);
+            pointer-events: none;
+        }
+
+        /* Box Esquerdo (Status) */
+        .badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 0 28px;
+            color: white;
+            font-weight: 800;
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 10px 0 0 10px;
+            min-width: 200px;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.3);
+            z-index: 2;
+            transition: background-color 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Efeito de brilho sutil no badge */
+        .badge::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: left 0.5s;
+        }
+        .container:not(.hidden) .badge::before {
+            left: 150%;
+            transition: left 1s ease-in-out;
+        }
+
+        /* Box Direito (Texto) */
+        .content {
+            background: var(--fundo-dark);
+            font-weight: 700;
+            color: var(--legenda-texto-cor);
+            padding: 16px 32px;
+            border-radius: 0 10px 10px 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-left: 6px solid white;
+            transition: border-color 0.4s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 34px;
+            letter-spacing: -0.5px;
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+        p {
+            margin: 6px 0 0 0;
+            font-size: 18px;
+            color: #444;
+            font-weight: 600;
+        }
+
+        .dot {
+            width: 16px;
+            height: 16px;
+            background-color: white;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px rgba(255,255,255,0.6);
+        }
+
+        /* Animações */
+        @keyframes blink {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.85); }
+        }
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(216, 119, 33, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(216, 119, 33, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(216, 119, 33, 0); }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .ativo-online {
+            animation: pulse-glow 2.5s infinite;
+        }
+        .ativo-online .dot {
+            animation: blink 1.2s infinite ease-in-out;
+        }
+
+        /* Cores de estado */
+        .estado-ao-vivo { background: var(--laranja) !important; }
+        .estado-retransmissao { background: var(--azul) !important; }
+        .estado-gravacao { background: var(--verde) !important; }
+        .estado-reprise { background: var(--amarelo) !important; color: #1a1a1a !important; }
+        .estado-online { background: var(--laranja) !important; }
+
+        /* Indicador de carregamento */
+        .loading {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255,255,255,0.3);
+            font-size: 14px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">Conectando...</div>
+
+    <div id="main_container" class="container hidden">
+        <div id="box_status" class="badge estado-online">
+            <span class="dot"></span>
+            <span id="txt_status">CARREGANDO</span>
+        </div>
+        <div id="box_info" class="content">
+            <h1 id="txt_titulo">BARRIGUDA WEB TV</h1>
+            <p id="txt_subtitulo">Irecê - Bahia</p>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'barriguda_tv_data';
+        let lastState = null;
+
+        function getData() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) return JSON.parse(raw);
+            } catch(e) {}
+            return { programas: [], visivel: 0 };
+        }
+
+        function getActiveProgram(data) {
+            if (!data.programas) return null;
+            return data.programas.find(p => p.ativo === 1) || data.programas[0] || null;
+        }
+
+        function atualizarOverlay() {
+            const data = getData();
+            const container = document.getElementById('main_container');
+            const boxStatus = document.getElementById('box_status');
+            const boxInfo = document.getElementById('box_info');
+            const txtTitulo = document.getElementById('txt_titulo');
+            const txtSubtitulo = document.getElementById('txt_subtitulo');
+            const txtStatus = document.getElementById('txt_status');
+
+            // Visibilidade
+            if (data.visivel === 1) {
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+            }
+
+            const programa = getActiveProgram(data);
+            if (!programa) {
+                txtTitulo.innerText = 'SEM SINAL';
+                txtSubtitulo.innerText = 'Nenhum programa ativo';
+                txtStatus.innerText = 'OFFLINE';
+                return;
+            }
+
+            // Atualiza textos
+            txtTitulo.innerText = programa.titulo || 'BARRIGUDA WEB TV';
+            txtSubtitulo.innerText = programa.subtitulo || '';
+            txtStatus.innerText = programa.estado || 'ONLINE';
+
+            // Remove classes de estado anteriores
+            boxStatus.classList.remove(
+                'estado-ao-vivo', 'estado-retransmissao', 
+                'estado-gravacao', 'estado-reprise', 'estado-online',
+                'ativo-online'
+            );
+
+            const estado = (programa.estado || '').toUpperCase().trim();
+            let corBorda = '#999';
+
+            // Aplica classe de estado
+            if (estado === 'AO VIVO') {
+                boxStatus.classList.add('estado-ao-vivo', 'ativo-online');
+                corBorda = 'var(--laranja)';
+            } else if (estado === 'RETRANSMISSÃO') {
+                boxStatus.classList.add('estado-retransmissao');
+                corBorda = 'var(--azul)';
+            } else if (estado === 'GRAVAÇÃO') {
+                boxStatus.classList.add('estado-gravacao');
+                corBorda = 'var(--verde)';
+            } else if (estado === 'REPRISE') {
+                boxStatus.classList.add('estado-reprise');
+                corBorda = 'var(--amarelo)';
+            } else {
+                boxStatus.classList.add('estado-online');
+                corBorda = 'var(--laranja)';
+            }
+
+            boxInfo.style.borderLeftColor = corBorda;
+        }
+
+        // Atualiza imediatamente e a cada 500ms (polling)
+        atualizarOverlay();
+        setInterval(atualizarOverlay, 500);
+
+        // Tenta usar BroadcastChannel para atualização instantânea (quando suportado)
+        try {
+            const bc = new BroadcastChannel('barriguda_sync');
+            bc.onmessage = function() {
+                atualizarOverlay();
+            };
+        } catch(e) {}
+
+        // Também escuta mudanças no localStorage de outras abas
+        window.addEventListener('storage', function(e) {
+            if (e.key === STORAGE_KEY) {
+                atualizarOverlay();
+            }
+        });
+    </script>
+</body>
+</html>

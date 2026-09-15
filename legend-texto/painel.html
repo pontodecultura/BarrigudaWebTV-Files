@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Controle Barriguda TV</title>
+    <style>
+        :root {
+            --bg: #121212;
+            --card: #1e1e1e;
+            --border: #333;
+            --input-bg: #2c2c2c;
+            --input-border: #444;
+            --text: #e0e0e0;
+            --text-muted: #888;
+            --accent: #0093d3;
+            --accent-hover: #007bb3;
+            --danger: #dc3545;
+            --danger-hover: #b02a37;
+            --warning: #ffc107;
+            --warning-text: #000;
+            --success: #28a745;
+            --success-hover: #218838;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        h2 { margin-bottom: 24px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+        .row { display: flex; gap: 20px; flex-wrap: wrap; }
+        .col-left { flex: 1; min-width: 300px; }
+        .col-right { flex: 1.5; min-width: 350px; }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            height: 100%;
+        }
+        .card-title {
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        .text-info { color: var(--accent); }
+        .text-warning { color: var(--warning); }
+        label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            margin-top: 12px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: white;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input:focus, select:focus { border-color: var(--accent); }
+        .d-flex { display: flex; gap: 10px; }
+        .w-100 { width: 100%; }
+        .mt-3 { margin-top: 16px; }
+        .mb-2 { margin-bottom: 8px; }
+        .py-2 { padding-top: 10px; padding-bottom: 10px; }
+        .py-3 { padding-top: 16px; padding-bottom: 16px; }
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 20px 0;
+        }
+        .btn {
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+        .btn-primary:hover { background: var(--accent-hover); }
+        .btn-warning {
+            background: var(--warning);
+            color: var(--warning-text);
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        .btn-secondary:hover { background: #5a6268; }
+        .btn-toggle-show {
+            background: var(--success);
+            color: white;
+            font-weight: bold;
+        }
+        .btn-toggle-show:hover { background: var(--success-hover); }
+        .btn-toggle-hide {
+            background: var(--warning);
+            color: black;
+            font-weight: bold;
+        }
+        .btn-toggle-hide:hover { background: #e0a800; }
+        .btn-sm {
+            padding: 4px 10px;
+            font-size: 0.8rem;
+        }
+        .btn-outline-info {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+        .btn-outline-info:hover { background: var(--accent); color: white; }
+        .btn-outline-warning {
+            background: transparent;
+            border: 1px solid var(--warning);
+            color: var(--warning);
+        }
+        .btn-outline-warning:hover { background: var(--warning); color: black; }
+        .btn-outline-danger {
+            background: transparent;
+            border: 1px solid var(--danger);
+            color: var(--danger);
+        }
+        .btn-outline-danger:hover { background: var(--danger); color: white; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        th {
+            text-align: left;
+            padding: 10px;
+            color: var(--text-muted);
+            font-weight: 500;
+            border-bottom: 1px solid var(--border);
+        }
+        td {
+            padding: 12px 10px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+        tr:hover { background: rgba(255,255,255,0.03); }
+        .table-active-row {
+            border-left: 4px solid var(--accent) !important;
+            background: rgba(0, 147, 211, 0.08) !important;
+        }
+        .fw-bold { font-weight: 600; }
+        .small { font-size: 0.8rem; color: var(--text-muted); }
+        .badge-estado {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: #333;
+            color: #ccc;
+            margin-top: 4px;
+        }
+        .text-end { text-align: right; }
+        .acoes { display: flex; gap: 6px; justify-content: flex-end; }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🎥 Painel Barriguda Web TV</h2>
+        <div class="row">
+            <div class="col-left">
+                <div class="card">
+                    <div class="card-title" id="formTitle">Novo Programa</div>
+                    <form id="formSalvar">
+                        <input type="hidden" name="id" id="id_programa">
+                        <div class="mb-2">
+                            <label>Título Principal</label>
+                            <input type="text" name="titulo" id="inp_titulo" required placeholder="Ex: BARRIGUDA WEB TV">
+                        </div>
+                        <div class="mb-2">
+                            <label>Subtítulo</label>
+                            <input type="text" name="subtitulo" id="inp_subtitulo" placeholder="Ex: Irecê - Bahia">
+                        </div>
+                        <div class="mb-2">
+                            <label>Estado</label>
+                            <select name="estado" id="inp_estado">
+                                <option value="AO VIVO">AO VIVO (Pisca)</option>
+                                <option value="RETRANSMISSÃO">RETRANSMISSÃO (Azul)</option>
+                                <option value="GRAVAÇÃO">GRAVAÇÃO (Verde)</option>
+                                <option value="REPRISE">REPRISE (Laranja)</option>
+                            </select>
+                        </div>
+                        <div class="d-flex mt-3">
+                            <button type="submit" id="btnSubmit" class="btn btn-primary w-100 py-2">💾 SALVAR</button>
+                            <button type="button" id="btnCancelar" onclick="cancelarEdicao()" class="btn btn-secondary w-100 py-2" style="display:none;">CANCELAR</button>
+                        </div>
+                    </form>
+                    <hr>
+                    <button id="btnToggle" onclick="toggleOverlay()" class="btn w-100 py-3">
+                        👁️ EXIBIR OVERLAY
+                    </button>
+                </div>
+            </div>
+            <div class="col-right">
+                <div class="card">
+                    <div class="card-title">Programas Salvos</div>
+                    <div id="tabelaContainer">
+                        <div class="empty-state">Nenhum programa cadastrado.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'barriguda_tv_data';
+
+        function getData() {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) return JSON.parse(raw);
+            // Dados iniciais padrão
+            const inicial = {
+                programas: [
+                    { id: 1, titulo: 'BARRIGUDA WEB TV', subtitulo: 'Irecê - Bahia', estado: 'ONLINE', ativo: 1, visivel: 1 }
+                ],
+                visivel: 1
+            };
+            saveData(inicial);
+            return inicial;
+        }
+
+        function saveData(data) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            // Notifica outras abas/janelas (incluindo overlay no OBS)
+            try {
+                const bc = new BroadcastChannel('barriguda_sync');
+                bc.postMessage({ type: 'update', timestamp: Date.now() });
+            } catch(e) {}
+        }
+
+        function render() {
+            const data = getData();
+            const container = document.getElementById('tabelaContainer');
+            const btnToggle = document.getElementById('btnToggle');
+
+            // Atualiza botão de toggle
+            if (data.visivel) {
+                btnToggle.innerText = '🙈 OCULTAR OVERLAY';
+                btnToggle.className = 'btn btn-toggle-hide w-100 py-3';
+            } else {
+                btnToggle.innerText = '👁️ EXIBIR OVERLAY';
+                btnToggle.className = 'btn btn-toggle-show w-100 py-3';
+            }
+
+            if (!data.programas || data.programas.length === 0) {
+                container.innerHTML = '<div class="empty-state">Nenhum programa cadastrado.</div>';
+                return;
+            }
+
+            let html = '<table><thead><tr><th>Info</th><th class="text-end">Ações</th></tr></thead><tbody>';
+            // Ordena por id DESC
+            const sorted = [...data.programas].sort((a, b) => b.id - a.id);
+            sorted.forEach(p => {
+                const isActive = p.ativo === 1;
+                const rowClass = isActive ? 'table-active-row' : '';
+                html += `<tr class="${rowClass}">
+                    <td>
+                        <div class="fw-bold">${escapeHtml(p.titulo)}</div>
+                        <div class="small">${escapeHtml(p.subtitulo || '')}</div>
+                        <span class="badge-estado">${escapeHtml(p.estado)}</span>
+                    </td>
+                    <td class="text-end">
+                        <div class="acoes">
+                            ${!isActive ? `<button onclick="usarPrograma(${p.id})" class="btn btn-sm btn-outline-info" title="Exibir no OBS">▶</button>` : ''}
+                            <button onclick="carregarEdicao(${p.id})" class="btn btn-sm btn-outline-warning" title="Editar">✏️</button>
+                            <button onclick="deletarPrograma(${p.id})" class="btn btn-sm btn-outline-danger" title="Apagar">🗑️</button>
+                        </div>
+                    </td>
+                </tr>`;
+            });
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function carregarEdicao(id) {
+            const data = getData();
+            const p = data.programas.find(x => x.id === id);
+            if (!p) return;
+
+            document.getElementById('id_programa').value = p.id;
+            document.getElementById('inp_titulo').value = p.titulo;
+            document.getElementById('inp_subtitulo').value = p.subtitulo || '';
+            document.getElementById('inp_estado').value = p.estado;
+
+            document.getElementById('formTitle').innerText = 'Editando Programa #' + p.id;
+            document.getElementById('formTitle').classList.remove('text-info');
+            document.getElementById('formTitle').classList.add('text-warning');
+
+            const btn = document.getElementById('btnSubmit');
+            btn.innerText = '🔄 ATUALIZAR';
+            btn.classList.remove('btn-primary');
+            btn.classList.add('btn-warning');
+
+            document.getElementById('btnCancelar').style.display = 'block';
+        }
+
+        function cancelarEdicao() {
+            document.getElementById('formSalvar').reset();
+            document.getElementById('id_programa').value = '';
+
+            document.getElementById('formTitle').innerText = 'Novo Programa';
+            document.getElementById('formTitle').classList.remove('text-warning');
+            document.getElementById('formTitle').classList.add('text-info');
+
+            const btn = document.getElementById('btnSubmit');
+            btn.innerText = '💾 SALVAR';
+            btn.classList.remove('btn-warning');
+            btn.classList.add('btn-primary');
+
+            document.getElementById('btnCancelar').style.display = 'none';
+        }
+
+        document.getElementById('formSalvar').onsubmit = function(e) {
+            e.preventDefault();
+            const data = getData();
+            const id = document.getElementById('id_programa').value;
+            const titulo = document.getElementById('inp_titulo').value.trim();
+            const subtitulo = document.getElementById('inp_subtitulo').value.trim();
+            const estado = document.getElementById('inp_estado').value;
+
+            if (id) {
+                // Editar
+                const idx = data.programas.findIndex(x => x.id == id);
+                if (idx !== -1) {
+                    data.programas[idx].titulo = titulo;
+                    data.programas[idx].subtitulo = subtitulo;
+                    data.programas[idx].estado = estado;
+                }
+            } else {
+                // Novo
+                const novoId = data.programas.length > 0 ? Math.max(...data.programas.map(p => p.id)) + 1 : 1;
+                data.programas.push({
+                    id: novoId,
+                    titulo: titulo,
+                    subtitulo: subtitulo,
+                    estado: estado,
+                    ativo: 0,
+                    visivel: 1
+                });
+            }
+            saveData(data);
+            cancelarEdicao();
+            render();
+        };
+
+        function usarPrograma(id) {
+            const data = getData();
+            data.programas.forEach(p => p.ativo = 0);
+            const alvo = data.programas.find(p => p.id === id);
+            if (alvo) alvo.ativo = 1;
+            saveData(data);
+            render();
+        }
+
+        function deletarPrograma(id) {
+            if (!confirm('Tem certeza que deseja apagar este programa?')) return;
+            const data = getData();
+            data.programas = data.programas.filter(p => p.id !== id);
+            // Se apagou o ativo, garante que não fique nenhum ativo
+            const temAtivo = data.programas.some(p => p.ativo === 1);
+            if (!temAtivo && data.programas.length > 0) {
+                data.programas[0].ativo = 1;
+            }
+            saveData(data);
+            render();
+        }
+
+        function toggleOverlay() {
+            const data = getData();
+            data.visivel = data.visivel ? 0 : 1;
+            saveData(data);
+            render();
+        }
+
+        // Inicializa
+        render();
+    </script>
+</body>
+</html>
