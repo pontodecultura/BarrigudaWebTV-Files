@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barriguda Web TV - Biblioteca de Logos</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            900: '#881337',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome para Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Padrão de transparência (checkerboard) para PNGs e SVGs */
+        .bg-checkerboard {
+            background-color: #ffffff;
+            background-image: linear-gradient(45deg, #e5e7eb 25%, transparent 25%), 
+                              linear-gradient(-45deg, #e5e7eb 25%, transparent 25%), 
+                              linear-gradient(45deg, transparent 75%, #e5e7eb 75%), 
+                              linear-gradient(-45deg, transparent 75%, #e5e7eb 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+
+        .dark .bg-checkerboard {
+            background-color: #1f2937;
+            background-image: linear-gradient(45deg, #111827 25%, transparent 25%), 
+                              linear-gradient(-45deg, #111827 25%, transparent 25%), 
+                              linear-gradient(45deg, transparent 75%, #111827 75%), 
+                              linear-gradient(-45deg, transparent 75%, #111827 75%);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.5);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(107, 114, 128, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+
+    <!-- Header Principal -->
+    <header class="sticky top-0 z-30 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <!-- Identificação do Site -->
+                <div class="flex items-center space-x-3">
+                    <div class="p-2.5 bg-gradient-to-tr from-brand-600 to-amber-500 rounded-xl text-white shadow-md shadow-brand-500/20">
+                        <i class="fa-solid fa-tv text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold bg-gradient-to-r from-slate-900 via-brand-700 to-brand-600 dark:from-white dark:via-slate-200 dark:to-brand-500 bg-clip-text text-transparent">
+                            Barriguda Web TV
+                        </h1>
+                        <p class="text-xs font-medium text-slate-500 dark:text-slate-400">
+                            Biblioteca Oficial de Logos & Ativos Visuais
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Botões de Ação Topo -->
+                <div class="flex items-center gap-3 self-end md:self-auto">
+                    <!-- GitHub Link -->
+                    <a href="https://github.com/pontodecultura/BarrigudaWebTV-Files/tree/main/LOGOS/COMPILADO" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="px-3 py-2 text-xs font-semibold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 transition-colors flex items-center gap-2">
+                        <i class="fa-brands fa-github text-sm"></i> Repositório
+                    </a>
+
+                    <!-- Modificador de Tema Dark/Light -->
+                    <button id="themeToggle" 
+                            class="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 transition-colors"
+                            title="Alternar Tema">
+                        <i class="fa-solid fa-moon dark:hidden"></i>
+                        <i class="fa-solid fa-sun hidden dark:block text-amber-400"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Barra de Ferramentas: Filtro e Busca -->
+            <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700/60 flex flex-col sm:flex-row gap-3">
+                <!-- Campo de Pesquisa -->
+                <div class="relative flex-1">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" 
+                           id="searchInput" 
+                           placeholder="Buscar por nome da logo ou arquivo..." 
+                           class="w-full pl-9 pr-4 py-2 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all">
+                </div>
+
+                <!-- Filtro de Extensão/Formato -->
+                <div class="w-full sm:w-48">
+                    <select id="formatFilter" 
+                            class="w-full py-2 px-3 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all text-slate-700 dark:text-slate-300">
+                        <option value="ALL">Todos os Formatos</option>
+                        <option value="SVG">Vetor (SVG)</option>
+                        <option value="PNG">Imagem (PNG)</option>
+                        <option value="JPG">Imagem (JPG/JPEG)</option>
+                        <option value="PDF">Documentos (PDF)</option>
+                        <option value="OTHER">Outros Arquivos</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+        <!-- Indicador de Status / Carregamento -->
+        <div id="statusContainer" class="py-16 text-center">
+            <div class="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-brand-600 dark:text-brand-400 bg-white dark:bg-slate-800 transition ease-in-out duration-150">
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-brand-600 dark:text-brand-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Conectando ao GitHub e mapeando logos...
+            </div>
+        </div>
+
+        <!-- Renderização das Pastas e Logos -->
+        <div id="contentGrid" class="space-y-10 hidden"></div>
+
+        <!-- Alerta de "Nenhum Resultado Encontrado" -->
+        <div id="emptyResult" class="hidden py-16 text-center">
+            <div class="max-w-md mx-auto p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
+                <i class="fa-solid fa-folder-open text-4xl text-slate-400 mb-3"></i>
+                <h3 class="text-base font-semibold text-slate-800 dark:text-slate-200">Nenhum arquivo encontrado</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Tente mudar o termo digitado no campo de busca ou escolha outro formato no filtro.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 mt-auto py-6 text-center text-xs text-slate-500 dark:text-slate-400">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>Barriguda Web TV &copy; <span id="year"></span> - Integrado diretamente com o GitHub Pages</p>
+            <p class="mt-1 font-mono text-[11px] text-slate-400 dark:text-slate-500">Base URL: https://pontodecultura.github.io/BarrigudaWebTV-Files/LOGOS/COMPILADO/</p>
+        </div>
+    </footer>
+
+    <!-- Modal de Visualização Expandida (Lightbox) -->
+    <div id="imageModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden border border-slate-200 dark:border-slate-700 transform scale-95 transition-transform duration-300" id="modalContent">
+            <!-- Modal Header -->
+            <div class="p-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                <div class="flex items-center space-x-2 truncate pr-4">
+                    <span id="modalFileBadge" class="px-2 py-0.5 text-[10px] font-bold rounded bg-brand-100 text-brand-700 dark:bg-brand-900/50 dark:text-brand-300 uppercase">PNG</span>
+                    <h3 id="modalTitle" class="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">logo.png</h3>
+                </div>
+                <button id="closeModalBtn" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body (Preview da Imagem com Fundo Quadriculado) -->
+            <div class="p-6 bg-checkerboard flex items-center justify-center min-h-[250px] max-h-[60vh] overflow-auto">
+                <img id="modalImage" src="" alt="Preview da Logo" class="max-h-[50vh] max-w-full object-contain rounded drop-shadow-md">
+            </div>
+
+            <!-- Modal Footer (Ações e Links Diretos) -->
+            <div class="p-4 bg-slate-50 dark:bg-slate-800/80 border-t border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="w-full sm:w-auto text-xs text-slate-500 dark:text-slate-400 truncate font-mono bg-slate-200/50 dark:bg-slate-900/50 px-3 py-1.5 rounded" id="modalUrlDisplay">
+                    https://...
+                </div>
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    <button id="copyModalUrlBtn" class="px-3 py-2 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5">
+                        <i class="fa-regular fa-copy"></i> Copiar URL
+                    </button>
+                    <a id="downloadModalBtn" href="#" target="_blank" download class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-lg text-xs font-semibold transition-colors shadow-sm flex items-center gap-1.5">
+                        <i class="fa-solid fa-download"></i> Abrir / Download
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification (Notificação Flutuante de Cópia) -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-2.5 rounded-xl shadow-xl text-xs font-medium flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <i class="fa-solid fa-circle-check text-emerald-400 dark:text-emerald-600"></i>
+        <span>Link da Web copiado para a área de transferência!</span>
+    </div>
+
+    <!-- Lógica em JavaScript Vanilla -->
+    <script>
+        // Configuração do Repositório GitHub e Web Page
+        const CONFIG = {
+            owner: 'pontodecultura',
+            repo: 'BarrigudaWebTV-Files',
+            branch: 'main',
+            basePath: 'LOGOS/COMPILADO',
+            // Estrutura do GitHub Pages pública solicitada
+            webBaseUrl: 'https://pontodecultura.github.io/BarrigudaWebTV-Files/LOGOS/COMPILADO'
+        };
+
+        // Estado da Aplicação
+        let allFiles = []; // Guarda todos os arquivos encontrados
+        let categoryMap = {}; // Estrutura agrupada por pasta
+
+        // Elementos DOM
+        const statusContainer = document.getElementById('statusContainer');
+        const contentGrid = document.getElementById('contentGrid');
+        const emptyResult = document.getElementById('emptyResult');
+        const searchInput = document.getElementById('searchInput');
+        const formatFilter = document.getElementById('formatFilter');
+        const themeToggle = document.getElementById('themeToggle');
+        const toast = document.getElementById('toast');
+
+        // Modal DOM
+        const imageModal = document.getElementById('imageModal');
+        const modalContent = document.getElementById('modalContent');
+        const modalImage = document.getElementById('modalImage');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalFileBadge = document.getElementById('modalFileBadge');
+        const modalUrlDisplay = document.getElementById('modalUrlDisplay');
+        const copyModalUrlBtn = document.getElementById('copyModalUrlBtn');
+        const downloadModalBtn = document.getElementById('downloadModalBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        // Ano no rodapé
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // 1. Inicialização da Aplicação
+        async function init() {
+            setupTheme();
+            setupEventListeners();
+            
+            try {
+                // Inicia o mapeamento recursivo das subpastas e arquivos
+                await fetchFolderContents(CONFIG.basePath);
+                
+                if (allFiles.length === 0) {
+                    showError("Nenhum arquivo foi encontrado na pasta especificada.");
+                    return;
+                }
+
+                statusContainer.classList.add('hidden');
+                contentGrid.classList.remove('hidden');
+
+                // Renderiza Inicialmente
+                renderContent(allFiles);
+
+            } catch (err) {
+                console.error(err);
+                showError(`Falha ao conectar com a API do GitHub: ${err.message}`);
+            }
+        }
+
+        // 2. Função Recursiva para Buscar Arquivos no GitHub API
+        async function fetchFolderContents(path) {
+            const apiUrl = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}?ref=${CONFIG.branch}`;
+            const response = await fetch(apiUrl);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP Error ${response.status}`);
+            }
+
+            const items = await response.json();
+
+            for (const item of items) {
+                if (item.type === 'dir') {
+                    // Chamada recursiva para subpastas
+                    await fetchFolderContents(item.path);
+                } else if (item.type === 'file') {
+                    // Ignora arquivos ocultos como .gitkeep ou .DS_Store
+                    if (item.name.startsWith('.')) continue;
+
+                    // Calcula o caminho relativo referente a LOGOS/COMPILADO
+                    const relativePath = item.path.replace(`${CONFIG.basePath}/`, '');
+                    
+                    // Extrai a pasta mãe/categoria
+                    const pathParts = relativePath.split('/');
+                    const category = pathParts.length > 1 ? pathParts[0] : 'Geral';
+
+                    // Constrói a URL direta do GitHub Pages da Organização
+                    const webDirectUrl = `${CONFIG.webBaseUrl}/${relativePath}`;
+
+                    // Obtém extensão
+                    const ext = item.name.split('.').pop().toUpperCase();
+
+                    const fileObj = {
+                        name: item.name,
+                        path: item.path,
+                        relativePath: relativePath,
+                        category: category,
+                        extension: ext,
+                        size: item.size,
+                        webUrl: webDirectUrl,
+                        isImage: ['PNG', 'JPG', 'JPEG', 'SVG', 'WEBP', 'GIF', 'ICO'].includes(ext)
+                    };
+
+                    allFiles.push(fileObj);
+                }
+            }
+        }
+
+        // 3. Renderização na Interface
+        function renderContent(filesToRender) {
+            contentGrid.innerHTML = '';
+
+            if (filesToRender.length === 0) {
+                contentGrid.classList.add('hidden');
+                emptyResult.classList.remove('hidden');
+                return;
+            }
+
+            emptyResult.classList.add('hidden');
+            contentGrid.classList.remove('hidden');
+
+            // Agrupa por Categoria/Subpasta
+            const grouped = {};
+            filesToRender.forEach(file => {
+                if (!grouped[file.category]) grouped[file.category] = [];
+                grouped[file.category].push(file);
+            });
+
+            // Cria seções para cada subpasta
+            Object.keys(grouped).sort().forEach(category => {
+                const categoryFiles = grouped[category];
+
+                const section = document.createElement('section');
+                section.className = 'bg-white dark:bg-slate-800/60 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/80 shadow-sm';
+
+                // Seção Header
+                const sectionHeader = document.createElement('div');
+                sectionHeader.className = 'flex items-center justify-between pb-4 mb-6 border-b border-slate-100 dark:border-slate-700/80';
+                sectionHeader.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="p-2 bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 rounded-lg text-sm">
+                            <i class="fa-solid fa-folder-open"></i>
+                        </span>
+                        <h2 class="text-base font-bold text-slate-800 dark:text-slate-100 uppercase tracking-wider">${category}</h2>
+                    </div>
+                    <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+                        ${categoryFiles.length} ${categoryFiles.length === 1 ? 'arquivo' : 'arquivos'}
+                    </span>
+                `;
+                section.appendChild(sectionHeader);
+
+                // Seção Grid de Cards
+                const cardsGrid = document.createElement('div');
+                cardsGrid.className = 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4';
+
+                categoryFiles.forEach(file => {
+                    const card = createCardElement(file);
+                    cardsGrid.appendChild(card);
+                });
+
+                section.appendChild(cardsGrid);
+                contentGrid.appendChild(section);
+            });
+        }
+
+        // 4. Criação de Card Individual
+        function createCardElement(file) {
+            const card = document.createElement('div');
+            card.className = 'group bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700/70 rounded-xl overflow-hidden hover:shadow-md hover:border-brand-500/50 dark:hover:border-brand-500/50 transition-all flex flex-col justify-between';
+
+            // Área de Pré-Visualização / Thumbnail
+            const previewArea = document.createElement('div');
+            previewArea.className = 'relative h-36 bg-checkerboard flex items-center justify-center p-3 cursor-pointer overflow-hidden';
+
+            if (file.isImage) {
+                previewArea.innerHTML = `
+                    <img src="${file.webUrl}" 
+                         alt="${file.name}" 
+                         loading="lazy" 
+                         class="max-h-full max-w-full object-contain transform group-hover:scale-105 transition-transform duration-300 drop-shadow-sm"
+                         onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'text-center text-xs text-slate-400\'><i class=\'fa-solid fa-triangle-exclamation mb-1 text-amber-500\'></i><br>Erro de Pré-visualização</div>';">
+                    <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/20 transition-colors flex items-center justify-center">
+                        <span class="opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900/80 text-white text-[11px] px-2.5 py-1 rounded-full font-medium shadow">
+                            <i class="fa-solid fa-expand mr-1"></i> Expandir
+                        </span>
+                    </div>
+                `;
+                previewArea.addEventListener('click', () => openModal(file));
+            } else {
+                // Arquivo Não-Imagem (PDF, AI, ZIP, etc)
+                const iconClass = getFileIcon(file.extension);
+                previewArea.innerHTML = `
+                    <div class="text-center">
+                        <i class="${iconClass} text-4xl text-slate-400 dark:text-slate-500 group-hover:scale-110 transition-transform"></i>
+                        <span class="block text-[10px] text-slate-400 mt-2 font-mono uppercase">${file.extension}</span>
+                    </div>
+                `;
+                previewArea.addEventListener('click', () => window.open(file.webUrl, '_blank'));
+            }
+
+            // Área de Detalhes
+            const detailsArea = document.createElement('div');
+            detailsArea.className = 'p-3 bg-white dark:bg-slate-800 border-t border-slate-200/60 dark:border-slate-700/60 flex-1 flex flex-col justify-between';
+            
+            const badgeColor = getBadgeColor(file.extension);
+
+            detailsArea.innerHTML = `
+                <div>
+                    <div class="flex items-center justify-between gap-1 mb-1.5">
+                        <span class="text-[9px] font-bold px-1.5 py-0.5 rounded ${badgeColor} uppercase tracking-wider">${file.extension}</span>
+                        <span class="text-[10px] text-slate-400 font-mono">${formatBytes(file.size)}</span>
+                    </div>
+                    <h3 class="text-xs font-medium text-slate-700 dark:text-slate-200 truncate" title="${file.name}">
+                        ${file.name}
+                    </h3>
+                </div>
+
+                <!-- Botões de Ação do Card -->
+                <div class="flex items-center gap-1.5 mt-3 pt-2 border-t border-slate-100 dark:border-slate-700/50">
+                    <button class="copy-btn flex-1 py-1.5 px-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-200 text-[11px] font-medium rounded transition-colors flex items-center justify-center gap-1">
+                        <i class="fa-regular fa-copy"></i> Copiar Link
+                    </button>
+                    <a href="${file.webUrl}" target="_blank" rel="noopener noreferrer" class="py-1.5 px-2 bg-brand-50 hover:bg-brand-100 dark:bg-brand-900/30 dark:hover:bg-brand-900/60 text-brand-600 dark:text-brand-400 text-[11px] font-medium rounded transition-colors flex items-center justify-center" title="Abrir link direto na Web">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
+            `;
+
+            // Evento para copiar URL
+            detailsArea.querySelector('.copy-btn').addEventListener('click', (e) => {
+                e.stopPropagation();
+                copyToClipboard(file.webUrl);
+            });
+
+            card.appendChild(previewArea);
+            card.appendChild(detailsArea);
+            return card;
+        }
+
+        // 5. Filtros e Pesquisa
+        function filterFiles() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const selectedFormat = formatFilter.value;
+
+            const filtered = allFiles.filter(file => {
+                const matchesSearch = file.name.toLowerCase().includes(searchTerm) || 
+                                      file.category.toLowerCase().includes(searchTerm);
+                
+                let matchesFormat = true;
+                if (selectedFormat === 'SVG') matchesFormat = file.extension === 'SVG';
+                else if (selectedFormat === 'PNG') matchesFormat = file.extension === 'PNG';
+                else if (selectedFormat === 'JPG') matchesFormat = ['JPG', 'JPEG'].includes(file.extension);
+                else if (selectedFormat === 'PDF') matchesFormat = file.extension === 'PDF';
+                else if (selectedFormat === 'OTHER') matchesFormat = !['SVG', 'PNG', 'JPG', 'JPEG', 'PDF'].includes(file.extension);
+
+                return matchesSearch && matchesFormat;
+            });
+
+            renderContent(filtered);
+        }
+
+        // 6. Funções Utilitárias e Modal
+        function openModal(file) {
+            modalTitle.textContent = file.name;
+            modalFileBadge.textContent = file.extension;
+            modalImage.src = file.webUrl;
+            modalUrlDisplay.textContent = file.webUrl;
+            downloadModalBtn.href = file.webUrl;
+
+            // Configura o evento do botão copiar dentro do modal
+            copyModalUrlBtn.onclick = () => copyToClipboard(file.webUrl);
+
+            imageModal.classList.remove('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
+        }
+
+        function closeModal() {
+            imageModal.classList.add('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => { modalImage.src = ''; }, 300);
+        }
+
+        function copyToClipboard(text) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => showToast());
+            } else {
+                // Fallback para navegadores sem Clipboard API
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToast();
+            }
+        }
+
+        function showToast() {
+            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3000);
+        }
+
+        function formatBytes(bytes, decimals = 1) {
+            if (!bytes || bytes === 0) return '0 B';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+
+        function getFileIcon(ext) {
+            switch (ext) {
+                case 'PDF': return 'fa-solid fa-file-pdf';
+                case 'AI':
+                case 'EPS':
+                case 'CDR': return 'fa-solid fa-file-vector';
+                case 'ZIP':
+                case 'RAR': return 'fa-solid fa-file-zipper';
+                default: return 'fa-solid fa-file';
+            }
+        }
+
+        function getBadgeColor(ext) {
+            switch (ext) {
+                case 'SVG': return 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300';
+                case 'PNG': return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300';
+                case 'JPG':
+                case 'JPEG': return 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300';
+                case 'PDF': return 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300';
+                default: return 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-300';
+            }
+        }
+
+        function showError(message) {
+            statusContainer.innerHTML = `
+                <div class="max-w-md mx-auto p-6 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900 rounded-2xl text-rose-700 dark:text-rose-400 text-center">
+                    <i class="fa-solid fa-circle-exclamation text-3xl mb-2"></i>
+                    <h3 class="font-semibold text-sm">Erro ao carregar dados</h3>
+                    <p class="text-xs mt-1 opacity-90">${message}</p>
+                </div>
+            `;
+        }
+
+        // Configuração de Eventos
+        function setupEventListeners() {
+            searchInput.addEventListener('input', filterFiles);
+            formatFilter.addEventListener('change', filterFiles);
+
+            closeModalBtn.addEventListener('click', closeModal);
+            imageModal.addEventListener('click', (e) => {
+                if (e.target === imageModal) closeModal();
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeModal();
+            });
+
+            themeToggle.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            });
+        }
+
+        function setupTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        // Executa ao Carregar a Página
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
