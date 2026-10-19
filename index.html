@@ -3,159 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galeria de Logos - BarrigudaWebTV</title>
+    <title>Barriguda WebTV - Galeria de Logos</title>
+
+    <!-- Favicon com a Logo Oficial -->
+    <link rel="icon" type="image/png" href="https://pontodecultura.github.io/files/LOGOS/COMPILADO/Logo_Barriguda_Web_tv_logo.png">
+
     <style>
         :root {
             --bg-body: #f8fafc;
             --bg-card: #ffffff;
+            --bg-header: #ffffff;
             --text-primary: #0f172a;
             --text-secondary: #64748b;
             --accent: #2563eb;
             --accent-hover: #1d4ed8;
             --border: #e2e8f0;
-            --checker-bg: #cbd5e1;
+            --checker-bg: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            --modal-bg: rgba(15, 23, 42, 0.8);
         }
 
         [data-theme="dark"] {
             --bg-body: #0f172a;
             --bg-card: #1e293b;
+            --bg-header: #1e293b;
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
             --border: #334155;
             --checker-bg: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --modal-bg: rgba(0, 0, 0, 0.85);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
             background-color: var(--bg-body);
             color: var(--text-primary);
-            padding: 24px 16px;
-            transition: background 0.3s, color 0.3s;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.25s, color 0.25s;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
+        /* Header */
         header {
+            background-color: var(--bg-header);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 16px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
             flex-wrap: wrap;
             gap: 16px;
         }
 
-        h1 {
-            font-size: 1.6rem;
-            font-weight: 700;
-        }
-
-        .controls {
+        .brand {
             display: flex;
-            gap: 12px;
             align-items: center;
-            width: 100%;
-            margin-top: 8px;
+            gap: 14px;
         }
 
-        input[type="text"] {
-            padding: 12px 16px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--bg-card);
-            color: var(--text-primary);
-            outline: none;
-            flex: 1;
-            font-size: 0.95rem;
+        .brand img {
+            height: 48px;
+            width: auto;
+            object-fit: contain;
         }
 
-        button {
-            padding: 10px 16px;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background 0.2s;
-        }
-
-        button:hover {
-            background: var(--accent-hover);
-        }
-
-        .btn-theme {
-            background: var(--bg-card);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .folder-section {
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 24px;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        .folder-header {
+        .brand-text h1 {
             font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 16px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .brand-text p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Toolbar Controls */
+        .toolbar {
+            max-width: 1280px;
+            margin: 20px auto 0;
+            padding: 0 20px;
             display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .search-and-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
             align-items: center;
             justify-content: space-between;
         }
 
-        .badge-count {
-            font-size: 0.8rem;
-            background: var(--bg-body);
-            color: var(--text-secondary);
-            padding: 4px 10px;
-            border-radius: 20px;
-            border: 1px solid var(--border);
+        .search-box {
+            flex: 1;
+            min-width: 260px;
+            position: relative;
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 16px;
-        }
-
-        .card {
+        .search-box input {
+            width: 100%;
+            padding: 10px 14px 10px 38px;
             border: 1px solid var(--border);
             border-radius: 8px;
-            overflow: hidden;
             background: var(--bg-card);
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.2s, box-shadow 0.2s;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
         }
 
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        .search-box input:focus {
+            border-color: var(--accent);
         }
 
-        .preview-container {
-            height: 170px;
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+
+        .controls-group {
             display: flex;
+            gap: 10px;
             align-items: center;
-            justify-content: center;
-            padding: 12px;
+            flex-wrap: wrap;
+        }
+
+        select, button {
+            padding: 9px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            outline: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        select:hover, button:hover {
+            border-color: var(--text-secondary);
+        }
+
+        .btn-toggle-active {
+            background: var(--accent);
+            color: #ffffff;
+            border-color: var(--accent);
+        }
+
+        .btn-toggle-active:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+        }
+
+        .view-options {
+            display: flex;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2px;
+        }
+
+        .view-btn {
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            padding: 7px 12px;
+            color: var(--text-secondary);
+        }
+
+        .view-btn.active {
+            background: var(--accent);
+            color: #ffffff;
+        }
+
+        /* Container Principal */
+        main {
+            max-width: 1280px;
+            margin: 20px auto;
+            padding: 0 20px;
+            flex: 1;
+            width: 100%;
+        }
+
+        .results-summary {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Fundo Quadriculado para Transparência */
+        .checkerboard {
             background-color: var(--bg-body);
-            /* Pattern de fundo quadriculado para checar transparência */
             background-image: linear-gradient(45deg, var(--checker-bg) 25%, transparent 25%), 
                               linear-gradient(-45deg, var(--checker-bg) 25%, transparent 25%), 
                               linear-gradient(45deg, transparent 75%, var(--checker-bg) 75%), 
@@ -164,14 +233,49 @@
             background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
         }
 
-        .preview-container img {
+        /* --- MODOS DE VISUALIZAÇÃO --- */
+
+        /* Modo 1: Cards Grandes (Grid Standard) */
+        .layout-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .layout-grid .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .layout-grid .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        .layout-grid .preview {
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            cursor: pointer;
+        }
+
+        .layout-grid .preview img {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
         }
 
-        .card-body {
-            padding: 12px;
+        .layout-grid .card-info {
+            padding: 14px;
+            border-t: 1px solid var(--border);
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -179,185 +283,573 @@
             justify-content: space-between;
         }
 
-        .file-name {
+        .layout-grid .file-name {
             font-size: 0.85rem;
             font-weight: 600;
             word-break: break-all;
             line-height: 1.3;
         }
 
-        .actions {
+        .layout-grid .actions {
             display: flex;
             gap: 8px;
         }
 
-        .actions button, .actions a {
+        .layout-grid .actions button, .layout-grid .actions a {
             flex: 1;
-            text-align: center;
-            padding: 8px 10px;
-            font-size: 0.75rem;
-            text-decoration: none;
-            border-radius: 6px;
+            justify-content: center;
         }
 
-        .btn-open {
-            background: var(--accent);
-            color: white;
+        /* Modo 2: Miniaturas (Grid Compacto) */
+        .layout-compact {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 12px;
+        }
+
+        .layout-compact .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .layout-compact .preview {
+            height: 110px;
+            padding: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .btn-copy {
-            background: var(--bg-body);
-            color: var(--text-primary);
+        .layout-compact .preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .layout-compact .card-info {
+            padding: 8px 6px;
+            border-top: 1px solid var(--border);
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .layout-compact .actions {
+            display: none; /* Oculta ações em modo miniatura, abre via clique no modal */
+        }
+
+        /* Modo 3: Lista (List View) */
+        .layout-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .layout-list .card {
+            background: var(--bg-card);
             border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .layout-list .preview {
+            width: 48px;
+            height: 48px;
+            border-radius: 6px;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .layout-list .preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .layout-list .card-info {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            min-width: 0;
+        }
+
+        .layout-list .file-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .layout-list .actions {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        /* Modal Lightbox */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-bg);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-body {
+            background: var(--bg-card);
+            border-radius: 12px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: scale(0.95);
+            transition: transform 0.25s ease;
+        }
+
+        .modal-overlay.active .modal-body {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            padding: 4px;
+        }
+
+        .modal-preview {
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-height: 60vh;
+            overflow: auto;
+        }
+
+        .modal-preview img {
+            max-width: 100%;
+            max-height: 50vh;
+            object-fit: contain;
+        }
+
+        .modal-footer {
+            padding: 14px 20px;
+            border-top: 1px solid var(--border);
+            background: var(--bg-body);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .modal-url {
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            word-break: break-all;
+            flex: 1;
+        }
+
+        /* Badges de Formato */
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-left: 6px;
+        }
+
+        .badge-png { background: #dbeafe; color: #1e40af; }
+        .badge-svg { background: #fef3c7; color: #92400e; }
+        .badge-jpeg { background: #dcfce7; color: #166534; }
+        .badge-webp { background: #f3e8ff; color: #6b21a8; }
+
+        [data-theme="dark"] .badge-png { background: #1e3a8a; color: #bfdbfe; }
+        [data-theme="dark"] .badge-svg { background: #78350f; color: #fde68a; }
+        [data-theme="dark"] .badge-jpeg { background: #14532d; color: #bbf7d0; }
+        [data-theme="dark"] .badge-webp { background: #581c87; color: #e9d5ff; }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        footer {
+            text-align: center;
+            padding: 24px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
+    <!-- Cabeçalho -->
     <header>
-        <div>
-            <h1>Logos - BarrigudaWebTV</h1>
-            <p style="color: var(--text-secondary); font-size: 0.9rem;">Galeria de logos em LOGOS/COMPILADO</p>
-        </div>
-        <div>
-            <button class="btn-theme" onclick="toggleTheme()">🌓 Alternar Tema</button>
-        </div>
+        <div class="header-content">
+            <div class="brand">
+                <img src="https://pontodecultura.github.io/files/LOGOS/COMPILADO/Logo_Barriguda_Web_tv_logo.png" alt="Logo Barriguda WebTV">
+                <div class="brand-text">
+                    <h1>Barriguda WebTV</h1>
+                    <p>Galeria Oficial de Logos & Ativos Visuais</p>
+                </div>
+            </div>
 
-        <div class="controls">
-            <input type="text" id="searchInput" placeholder="Buscar por nome do arquivo de logo..." oninput="filterCards()">
+            <div class="controls-group">
+                <!-- Seletor de Tema -->
+                <select id="themeSelect" onchange="changeTheme(this.value)">
+                    <option value="system">🌓 Tema: Sistema</option>
+                    <option value="light">☀️ Tema: Claro</option>
+                    <option value="dark">🌙 Tema: Escuro</option>
+                </select>
+            </div>
         </div>
     </header>
 
-    <div id="gallery"></div>
-</div>
+    <!-- Barra de Ferramentas e Filtros -->
+    <div class="toolbar">
+        <div class="search-and-filters">
+            <!-- Campo de Busca -->
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Buscar por nome da logo..." oninput="filterFiles()">
+            </div>
 
-<script>
-    // URL Base para o GitHub Pages
-    const PAGES_BASE_URL = 'https://pontodecultura.github.io/files/LOGOS/COMPILADO';
+            <div class="controls-group">
+                <!-- Filtro por Formato -->
+                <select id="formatFilter" onchange="filterFiles()">
+                    <option value="ALL">Todos os Formatos</option>
+                    <option value="PNG">PNG (.png)</option>
+                    <option value="SVG">SVG (.svg)</option>
+                    <option value="JPEG">JPEG (.jpeg, .jpg)</option>
+                    <option value="WEBP">WEBP (.webp)</option>
+                </select>
 
-    // Lista de todos os 32 arquivos presentes na pasta
-    const logoFiles = [
-        "Barriguda_Arvore.png",
-        "Barriguda_Noticias_Logo.png",
-        "Barriguda_Noticias_Transparente.png",
-        "Barriguda_webtv.png",
-        "EDUCAÇÃO (2).png",
-        "EDUCAÇÃO.png",
-        "LOGOTIPO_MODELO_XYZ001.png",
-        "LOGOTIPO_MODELO_XYZ001.svg",
-        "LOGOTIPO_PONTO_DE_CULTURA_PROTOTIPO.png",
-        "LOGOTIPO_PONTO_DE_CULTURA_PROTOTIPO.svg",
-        "Logo SME png.png",
-        "Logo_Barriguda_Vertical (1).png",
-        "Logo_Barriguda_Vertical_100_year.png",
-        "Logo_Barriguda_Vertical_100_year_white.png",
-        "Logo_Barriguda_Web_tv.png",
-        "Logo_Barriguda_Web_tv_White.png",
-        "Logo_Barriguda_Web_tv_logo.png",
-        "Logo_vertical_Barriguda_Moderna.png",
-        "Logo_vertical_Barriguda_Moderna_branco.png",
-        "Logomarca_Secretaria_Nova_100anos.png",
-        "Logotipo_Barriguda_Web_TV_Fonte_Branco.png",
-        "WhatsApp Image 2025-10-19 at 18.54.29.jpeg",
-        "WhatsApp Image 2025-10-20 at 22.15.13 (1).jpeg",
-        "WhatsApp Image 2025-10-20 at 22.15.13.jpeg",
-        "WhatsApp Image 2025-10-20 at 22.22.35.jpeg",
-        "cropped-BAHIA-278x300.png",
-        "download.png",
-        "g39.png",
-        "logo-undime.webp",
-        "logo_proffile.png",
-        "path1-8.png",
-        "selo unicef oficial (1).png"
-    ];
+                <!-- Seletor de Layout / Modo de Visualização -->
+                <div class="view-options">
+                    <button class="view-btn" id="btnLayoutGrid" onclick="setLayout('grid')" title="Cards Grandes">🟩 Cards</button>
+                    <button class="view-btn" id="btnLayoutCompact" onclick="setLayout('compact')" title="Miniaturas">⣿ Miniaturas</button>
+                    <button class="view-btn" id="btnLayoutList" onclick="setLayout('list')" title="Lista">☰ Lista</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    function renderGallery() {
-        const gallery = document.getElementById('gallery');
-        
-        const section = document.createElement('div');
-        section.className = 'folder-section';
+    <!-- Conteúdo Principal -->
+    <main>
+        <div class="results-summary">
+            <span id="counterText">Exibindo 32 arquivos</span>
+            <span id="pathText" style="font-family: monospace;">LOGOS/COMPILADO</span>
+        </div>
 
-        let cardsHtml = '';
-        
-        logoFiles.forEach(fileName => {
-            // Encode dos caracteres especiais (espaços, parênteses, etc.) para montar URLs válidas
-            const encodedName = encodeURIComponent(fileName);
-            const fileUrl = `${PAGES_BASE_URL}/${encodedName}`;
+        <!-- Elemento de Renderização da Galeria -->
+        <div id="galleryContainer" class="layout-grid"></div>
+    </main>
 
-            cardsHtml += `
-                <div class="card" data-file-name="${fileName.toLowerCase()}">
-                    <div class="preview-container">
-                        <img src="${fileUrl}" alt="${fileName}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/150?text=Sem+Preview';">
+    <!-- Modal Lightbox -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
+        <div class="modal-body">
+            <div class="modal-header">
+                <h3 id="modalTitle">Nome do Arquivo</h3>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-preview checkerboard">
+                <img id="modalImg" src="" alt="Preview">
+            </div>
+            <div class="modal-footer">
+                <div class="modal-url" id="modalUrlText">https://...</div>
+                <div style="display: flex; gap: 8px;">
+                    <button id="modalCopyBtn" onclick="copyModalUrl()">Copiar URL</button>
+                    <a id="modalOpenBtn" href="#" target="_blank" class="btn-primary" style="text-decoration: none;">Abrir Link Direto</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer>
+        Barriguda WebTV &copy; <span id="year"></span> - Hospedado no GitHub Pages (Repositório: <code>files</code>)
+    </footer>
+
+    <script>
+        // Configuração Base das URLs
+        const PAGES_BASE_URL = 'https://pontodecultura.github.io/files/LOGOS/COMPILADO';
+
+        // Lista de Arquivos no Repositório
+        const fileList = [
+            "Barriguda_Arvore.png",
+            "Barriguda_Noticias_Logo.png",
+            "Barriguda_Noticias_Transparente.png",
+            "Barriguda_webtv.png",
+            "EDUCAÇÃO (2).png",
+            "EDUCAÇÃO.png",
+            "LOGOTIPO_MODELO_XYZ001.png",
+            "LOGOTIPO_MODELO_XYZ001.svg",
+            "LOGOTIPO_PONTO_DE_CULTURA_PROTOTIPO.png",
+            "LOGOTIPO_PONTO_DE_CULTURA_PROTOTIPO.svg",
+            "Logo SME png.png",
+            "Logo_Barriguda_Vertical (1).png",
+            "Logo_Barriguda_Vertical_100_year.png",
+            "Logo_Barriguda_Vertical_100_year_white.png",
+            "Logo_Barriguda_Web_tv.png",
+            "Logo_Barriguda_Web_tv_White.png",
+            "Logo_Barriguda_Web_tv_logo.png",
+            "Logo_vertical_Barriguda_Moderna.png",
+            "Logo_vertical_Barriguda_Moderna_branco.png",
+            "Logomarca_Secretaria_Nova_100anos.png",
+            "Logotipo_Barriguda_Web_TV_Fonte_Branco.png",
+            "WhatsApp Image 2025-10-19 at 18.54.29.jpeg",
+            "WhatsApp Image 2025-10-20 at 22.15.13 (1).jpeg",
+            "WhatsApp Image 2025-10-20 at 22.15.13.jpeg",
+            "WhatsApp Image 2025-10-20 at 22.22.35.jpeg",
+            "cropped-BAHIA-278x300.png",
+            "download.png",
+            "g39.png",
+            "logo-undime.webp",
+            "logo_proffile.png",
+            "path1-8.png",
+            "selo unicef oficial (1).png"
+        ];
+
+        // Estado do Modal Ativo
+        let activeModalUrl = '';
+
+        // 1. Inicialização da Aplicação
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('year').textContent = new Date().getFullYear();
+            loadPreferences();
+            renderGallery(fileList);
+        });
+
+        // 2. Persistência de Preferências (localStorage)
+        function loadPreferences() {
+            // Carrega Tema
+            const savedTheme = localStorage.getItem('app_theme') || 'system';
+            document.getElementById('themeSelect').value = savedTheme;
+            applyTheme(savedTheme);
+
+            // Carrega Modo de Visualização
+            const savedLayout = localStorage.getItem('app_layout') || 'grid';
+            setLayout(savedLayout, false);
+        }
+
+        function changeTheme(theme) {
+            localStorage.setItem('app_theme', theme);
+            applyTheme(theme);
+        }
+
+        function applyTheme(theme) {
+            if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+        }
+
+        function setLayout(layoutMode, save = true) {
+            if (save) localStorage.setItem('app_layout', layoutMode);
+
+            const container = document.getElementById('galleryContainer');
+            container.className = `layout-${layoutMode}`;
+
+            // Atualiza estado dos botões
+            document.getElementById('btnLayoutGrid').classList.toggle('active', layoutMode === 'grid');
+            document.getElementById('btnLayoutCompact').classList.toggle('active', layoutMode === 'compact');
+            document.getElementById('btnLayoutList').classList.toggle('active', layoutMode === 'list');
+        }
+
+        // 3. Renderização da Galeria
+        function renderGallery(files) {
+            const container = document.getElementById('galleryContainer');
+            container.innerHTML = '';
+
+            if (files.length === 0) {
+                container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-secondary);">Nenhuma logo encontrada para os filtros selecionados.</div>';
+                document.getElementById('counterText').textContent = '0 arquivos encontrados';
+                return;
+            }
+
+            document.getElementById('counterText').textContent = `Exibindo ${files.length} de ${fileList.length} arquivos`;
+
+            files.forEach(fileName => {
+                const encodedName = encodeURIComponent(fileName);
+                const fileUrl = `${PAGES_BASE_URL}/${encodedName}`;
+                const ext = getExtension(fileName);
+                const badgeClass = getBadgeClass(ext);
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = (e) => {
+                    // Evita disparar o modal ao clicar diretamente nos botões internos
+                    if (!e.target.closest('button') && !e.target.closest('a')) {
+                        openModal(fileName, fileUrl);
+                    }
+                };
+
+                card.innerHTML = `
+                    <div class="preview checkerboard">
+                        <img src="${fileUrl}" alt="${fileName}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/150?text=Indisponivel';">
                     </div>
-                    <div class="card-body">
-                        <div class="file-name" title="${fileName}">${fileName}</div>
+                    <div class="card-info">
+                        <div class="file-name" title="${fileName}">
+                            ${fileName}
+                            <span class="badge ${badgeClass}">${ext}</span>
+                        </div>
                         <div class="actions">
-                            <a href="${fileUrl}" target="_blank" class="btn-open">Abrir</a>
-                            <button class="btn-copy" onclick="copyLink('${fileUrl}', this)">Copiar URL</button>
+                            <a href="${fileUrl}" target="_blank" class="btn-primary" style="text-decoration: none;">Abrir</a>
+                            <button onclick="copyToClipboard('${fileUrl}', this)">Copiar URL</button>
                         </div>
                     </div>
-                </div>
-            `;
-        });
+                `;
 
-        section.innerHTML = `
-            <div class="folder-header">
-                <span>📁 LOGOS / COMPILADO</span>
-                <span class="badge-count" id="countBadge">${logoFiles.length} arquivos</span>
-            </div>
-            <div class="grid">${cardsHtml}</div>
-        `;
-
-        gallery.appendChild(section);
-    }
-
-    function filterCards() {
-        const query = document.getElementById('searchInput').value.toLowerCase();
-        const cards = document.querySelectorAll('.card');
-        let visibleCount = 0;
-
-        cards.forEach(card => {
-            const fileName = card.getAttribute('data-file-name');
-            if (fileName.includes(query)) {
-                card.style.display = 'flex';
-                visibleCount++;
-            } else {
-                card.style.display = 'none';
-            }
-        });
-
-        document.getElementById('countBadge').innerText = `${visibleCount} arquivos`;
-    }
-
-    function copyLink(url, btn) {
-        navigator.clipboard.writeText(url).then(() => {
-            const origText = btn.innerText;
-            btn.innerText = 'Copiado!';
-            btn.style.background = '#22c55e';
-            btn.style.color = '#fff';
-            setTimeout(() => {
-                btn.innerText = origText;
-                btn.style.background = '';
-                btn.style.color = '';
-            }, 2000);
-        });
-    }
-
-    function toggleTheme() {
-        if (document.body.hasAttribute('data-theme')) {
-            document.body.removeAttribute('data-theme');
-        } else {
-            document.body.setAttribute('data-theme', 'dark');
+                container.appendChild(card);
+            });
         }
-    }
 
-    // Inicializa a renderização dos cards
-    renderGallery();
-</script>
+        // 4. Filtro por Nome e Extensão
+        function filterFiles() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const format = document.getElementById('formatFilter').value;
 
+            const filtered = fileList.filter(fileName => {
+                const matchesName = fileName.toLowerCase().includes(query);
+                const ext = getExtension(fileName).toUpperCase();
+
+                let matchesFormat = true;
+                if (format === 'PNG') matchesFormat = ext === 'PNG';
+                else if (format === 'SVG') matchesFormat = ext === 'SVG';
+                else if (format === 'JPEG') matchesFormat = ext === 'JPG' || ext === 'JPEG';
+                else if (format === 'WEBP') matchesFormat = ext === 'WEBP';
+
+                return matchesName && matchesFormat;
+            });
+
+            renderGallery(filtered);
+        }
+
+        // 5. Funções Utilitárias
+        function getExtension(fileName) {
+            return fileName.split('.').pop().toUpperCase();
+        }
+
+        function getBadgeClass(ext) {
+            switch (ext) {
+                case 'PNG': return 'badge-png';
+                case 'SVG': return 'badge-svg';
+                case 'JPG':
+                case 'JPEG': return 'badge-jpeg';
+                case 'WEBP': return 'badge-webp';
+                default: return '';
+            }
+        }
+
+        function copyToClipboard(url, btnElement) {
+            navigator.clipboard.writeText(url).then(() => {
+                const originalText = btnElement.innerText;
+                btnElement.innerText = 'Copiado!';
+                btnElement.classList.add('btn-toggle-active');
+                setTimeout(() => {
+                    btnElement.innerText = originalText;
+                    btnElement.classList.remove('btn-toggle-active');
+                }, 2000);
+            });
+        }
+
+        // 6. Modal Lightbox
+        function openModal(fileName, fileUrl) {
+            activeModalUrl = fileUrl;
+            document.getElementById('modalTitle').textContent = fileName;
+            document.getElementById('modalImg').src = fileUrl;
+            document.getElementById('modalUrlText').textContent = fileUrl;
+            document.getElementById('modalOpenBtn').href = fileUrl;
+
+            const modal = document.getElementById('modalOverlay');
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modalOverlay');
+            modal.classList.remove('active');
+        }
+
+        function closeModalOnOverlay(e) {
+            if (e.target.id === 'modalOverlay') {
+                closeModal();
+            }
+        }
+
+        function copyModalUrl() {
+            const btn = document.getElementById('modalCopyBtn');
+            copyToClipboard(activeModalUrl, btn);
+        }
+
+        // Evento ESC para fechar modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
 </body>
 </html>
